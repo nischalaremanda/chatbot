@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        #chatbox {
+            width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px #ccc;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .user-message {
+            background-color: #d1e7dd;
+            text-align: right;
+        }
+        .bot-message {
+            background-color: #f8d7da;
+        }
+        #input-box {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        #send-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chatbox">
+    <h2>AI-Powered Chatbot</h2>
+    <div id="messages"></div>
+    <input type="text" id="input-box" placeholder="Type your message here...">
+    <button id="send-button">Send</button>
+</div>
+
+<script>
+    document.getElementById('send-button').addEventListener('click', async function() {
+        const userMessage = document.getElementById('input-box').value;
+        if (userMessage.trim() === "") return;
+
+        // Display user's message
+        const userMsgDiv = document.createElement('div');
+        userMsgDiv.className = 'message user-message';
+        userMsgDiv.textContent = userMessage;
+        document.getElementById('messages').appendChild(userMsgDiv);
+
+        // Clear input box
+        document.getElementById('input-box').value = '';
+
+        // Send request to the backend
+        try {
+            const response = await fetch('YOUR_BACKEND_URL/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage }),
+            });
+            const data = await response.json();
+
+            // Display bot's response
+            const botMsgDiv = document.createElement('div');
+            botMsgDiv.className = 'message bot-message';
+            botMsgDiv.textContent = data.response;
+            document.getElementById('messages').appendChild(botMsgDiv);
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
+
+</body>
+</html>
